@@ -15,11 +15,16 @@ export const Lead = styled(BasicLead)`
 
 export const PageToC = styled.nav`
   background: ${SIDEBAR_BACKGROUND};
-  margin-bottom: 1em;
+  margin: 0 -1rem 1em -1rem;
   padding: .25rem 1rem;
 
   > .header {
     font-size: 90%;
+  }
+
+  @media screen and (min-width: 800px) {
+    margin-left: 0;
+    margin-right: 0;
   }
 `
 
@@ -74,6 +79,7 @@ export const GlobalNav = styled.nav`
 
 
 export const Main = styled.main`
+  margin-top: ${HEADER_HEIGHT_REM + 1}rem;
   margin-bottom: 2em;
 
   > .blocks {
@@ -84,6 +90,7 @@ export const Main = styled.main`
   }
 
   @media screen and (min-width: 800px) {
+    margin-top: unset;
     padding-top: 1rem;
     max-width: 50rem;
 

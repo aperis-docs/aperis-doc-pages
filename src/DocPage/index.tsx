@@ -117,40 +117,27 @@ export default DocPage
 
 
 const DocsPageHeader = styled.header`
-  margin: 0 -1rem;
-  background: ${SIDEBAR_BACKGROUND};
-  border-right: ${SIDEBAR_BORDER};
+  padding: 1rem 0;
+  height: ${HEADER_HEIGHT_REM}rem;
 
-  > a {
-    flex-flow: row nowrap;
-  }
-
-  img {
-    margin: 0;
-  }
-
-  h1 {
-    font-size: 110%;
-    text-align: left;
-  }
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
   @media screen and (min-width: 800px) {
-    align-self: unset;
+    -webkit-backdrop-filter: unset;
+    backdrop-filter: unset;
+    right: unset;
+
+    background: ${SIDEBAR_BACKGROUND};
+    border-right: ${SIDEBAR_BORDER};
+
     width: ${SIDEBAR_WIDTH_REM}rem;
     overflow: hidden;
-    position: fixed;
     padding-left: 1rem;
-    top: 0;
-    left: 0;
-    margin: 0;
-
-    > a {
-      height: ${HEADER_HEIGHT_REM}rem;
-      padding: 0;
-      padding-top: 1rem;
-      margin: 0;
-      justify-content: flex-start;
-    }
   }
 `
 
@@ -171,13 +158,15 @@ const DocsPageMain = styled.div`
 
 
 const DocsPageFooter = styled.footer`
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+
   @media screen and (min-width: 800px) {
     width: ${SIDEBAR_WIDTH_REM}rem;
     overflow: hidden;
     position: fixed;
     bottom: 0;
     left: 0;
-    padding-left: 2rem;
     justify-content: flex-start;
   }
 `
