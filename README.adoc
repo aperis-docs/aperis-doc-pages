@@ -1,0 +1,3 @@
+= Aperis: documentation pages
+
+For usage example, refer to Glossarist site: https://github.com/glossarist/glossarist.org/.
