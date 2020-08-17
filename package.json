@@ -1,0 +1,29 @@
+{
+  "name": "aperis-doc-pages",
+  "version": "0.0.0-use-package-dist",
+  "main": "index.js",
+  "repository": "git@github.com:riboseinc/aperis-doc-pages.git",
+  "author": "Ribose Open <open@ribose.com>",
+  "scripts": {
+    "prepublish": "rm -rf dist; tsc; cp package-dist.json dist/package.json; rsync -avm --include='*.js' --include='*.scss' --include='*.css' --include='*.d.ts' -f 'hide,! */' ./src/ ./dist"
+  },
+  "dependencies": {
+    "asciidoctor": "^2.2.0",
+    "directory-tree": "^2.2.4",
+    "fs-extra": "^9.0.1",
+    "probe-image-size": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "styled-components": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.1",
+    "@types/react-dom": "^16.8.5",
+    "@types/styled-components": "^5.1.0",
+    "typescript": "^3.9.6"
+  },
+  "license": "MIT"
+}
