@@ -127,6 +127,8 @@ const DocsPageHeader = styled.header`
   left: 0;
   right: 0;
 
+  z-index: 10;
+
   @media screen and (min-width: 800px) {
     -webkit-backdrop-filter: unset;
     backdrop-filter: unset;
