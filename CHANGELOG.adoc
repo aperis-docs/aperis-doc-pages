@@ -1,5 +1,10 @@
 = CHANGELOG
 
+== 1.0.0-pre5
+
+Fixed an issue where sidebar would unexpectedly be closed
+on outside click on wide viewports.
+
 == 1.0.0-pre4
 
 Documentation pages now feature expandable sidebar with navigation.
