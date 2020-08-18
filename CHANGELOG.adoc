@@ -1,0 +1,10 @@
+= CHANGELOG
+
+== 1.0.0-pre4
+
+Documentation pages now feature expandable sidebar with navigation.
+
+Sidebar is open by default on wide viewports.
+
+If JS is not present, behavior is as before: navigation is always present
+after content.
