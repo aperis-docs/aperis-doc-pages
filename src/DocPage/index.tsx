@@ -49,12 +49,14 @@ function ({
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true)
 
-  useEffect(() => {
+  useEffect(closeSidebarIfViewportIsNarrow, [])
+
+  function closeSidebarIfViewportIsNarrow() {
     const wideViewport = window.innerWidth > 800
     if (!wideViewport) {
       setSidebarIsOpen(false)
     }
-  }, [])
+  }
 
   return (
     <>
@@ -80,7 +82,7 @@ function ({
         <DocsPageMain role="presentation" sidebarIsOpen={sidebarIsOpen}>
           <Main
               sidebarIsOpen={sidebarIsOpen}
-              onClick={() => setSidebarIsOpen(false)}>
+              onClick={closeSidebarIfViewportIsNarrow}>
             <PageTitle>{page.data?.title}</PageTitle>
 
             <Lead>
