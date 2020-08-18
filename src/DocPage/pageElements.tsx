@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Lead as BasicLead } from './typography'
 
 
@@ -6,6 +6,12 @@ export const SIDEBAR_WIDTH_REM = 16
 export const SIDEBAR_BACKGROUND = 'whiteSmoke'
 export const SIDEBAR_BORDER = `rgb(224,224,224) 1px solid`
 export const HEADER_HEIGHT_REM = 4
+export const BACKDROP_BLUR = css`
+  @supports (backdrop-filter: saturate(180%) blur(20px)) or (-webkit-backdrop-filter: saturate(180%) blur(20px)) {
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+`
 
 
 export const Lead = styled(BasicLead)`
@@ -63,10 +69,6 @@ export const GlobalNav = styled.nav`
     display: block;
 
     width: ${SIDEBAR_WIDTH_REM}rem;
-    position: fixed;
-    top: ${HEADER_HEIGHT_REM}rem;
-    left: 0;
-    bottom: 0;
     padding-left: .5rem;
 
     overflow-y: auto;
@@ -74,6 +76,52 @@ export const GlobalNav = styled.nav`
 
     background: ${SIDEBAR_BACKGROUND};
     border-right: ${SIDEBAR_BORDER};
+
+    position: fixed;
+    z-index: 10;
+    top: ${HEADER_HEIGHT_REM}rem;
+    left: 0;
+
+    bottom: 0;
+  }
+
+  && {
+    ${(props: { isExpanded?: boolean }) => props.isExpanded !== undefined
+      ? css`
+          // TODO: BEGIN DUPLICATION
+
+          margin-top: 0;
+          display: block;
+
+          width: ${SIDEBAR_WIDTH_REM}rem;
+          padding-left: .5rem;
+
+          overflow-y: auto;
+          overflow-x: hidden;
+
+          background: ${SIDEBAR_BACKGROUND};
+          border-right: ${SIDEBAR_BORDER};
+
+          position: fixed;
+          z-index: 10;
+          top: ${HEADER_HEIGHT_REM}rem;
+          left: 0;
+
+          // END DUPLICATION
+        `
+      : ''}
+
+    ${(props: { isExpanded?: boolean }) => props.isExpanded === true
+      ? css`
+          bottom: 0;
+        `
+      : ''}
+
+    ${(props: { isExpanded?: boolean }) => props.isExpanded === false
+      ? css`
+          bottom: 100%;
+        `
+      : ''}
   }
 `
 
@@ -90,7 +138,18 @@ export const Main = styled.main`
   }
 
   @media screen and (min-width: 800px) {
-    margin-top: unset;
+    transition: margin-top .2s linear;
+
+    ${(props: { sidebarIsOpen: boolean }) => props.sidebarIsOpen
+      ? css`
+          margin-top: unset;
+        `
+      : css`
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 4em;
+        `}
+
     padding-top: 1rem;
     max-width: 50rem;
 

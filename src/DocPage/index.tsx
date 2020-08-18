@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import styled, { css } from 'styled-components'
 
 import { DocPage, DocsPageNavItem } from '../types'
 
@@ -11,7 +11,7 @@ import {
   Main, Lead, PageToC, PageToCItemList, PageBlocks,
   GlobalNav, GlobalNavTopLevelItemList,
   SIDEBAR_BACKGROUND, SIDEBAR_BORDER,
-  SIDEBAR_WIDTH_REM, HEADER_HEIGHT_REM,
+  SIDEBAR_WIDTH_REM, HEADER_HEIGHT_REM, BACKDROP_BLUR,
 } from './pageElements'
 import PageBlock from './PageBlock'
 import GlobalNavMenuItem from './GlobalNavMenuItem'
@@ -44,6 +44,18 @@ function ({
   const items = sortItemsByImportance(page.items || []).filter(itemIsNonEmpty)
   const navSorted = sortItemsByImportance(nav || [])
 
+  const [interactive, setInteractive] = useState(false)
+  useEffect(() => setInteractive(true), [])
+
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(true)
+
+  useEffect(() => {
+    const wideViewport = window.innerWidth > 800
+    if (!wideViewport) {
+      setSidebarIsOpen(false)
+    }
+  }, [])
+
   return (
     <>
       <DocPageContext.Provider
@@ -52,12 +64,23 @@ function ({
             LinkComponent: LinkComponent || initialDocPageContext.LinkComponent,
             pathIsCurrent: pathIsCurrent || initialDocPageContext.pathIsCurrent,
           }}>
-        <DocsPageHeader>
+        <DocsPageHeader sidebarIsOpen={interactive ? sidebarIsOpen : undefined}>
+          {interactive
+            ? <NavExpandTrigger
+                isActive={sidebarIsOpen}
+                title="Toggle menu"
+                dangerouslySetInnerHTML={{ __html: MENU_ICON_SVG }}
+                onClick={() => setSidebarIsOpen(s => !s)}>
+              </NavExpandTrigger>
+            : null}
+
           {header}
         </DocsPageHeader>
 
-        <DocsPageMain role="presentation">
-          <Main>
+        <DocsPageMain role="presentation" sidebarIsOpen={sidebarIsOpen}>
+          <Main
+              sidebarIsOpen={sidebarIsOpen}
+              onClick={() => setSidebarIsOpen(false)}>
             <PageTitle>{page.data?.title}</PageTitle>
 
             <Lead>
@@ -94,7 +117,7 @@ function ({
           </Main>
 
           {navSorted.length > 0
-            ? <GlobalNav>
+            ? <GlobalNav isExpanded={interactive ? sidebarIsOpen : undefined}>
                 <GlobalNavTopLevelItemList>
                   {navSorted.map(i =>
                     <GlobalNavMenuItem item={i} relative={rootURLPath} />
@@ -116,12 +139,36 @@ function ({
 export default DocPage
 
 
+const MENU_ICON_SVG = `
+  <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" transform="translate(3 5)"><g stroke="#2a2e3b" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 1.5h8"/><path d="m4.5 5.498h5"/><path d="m4.5 9.5h8"/></g><path d="m1.49884033 2.5c.5 0 1-.5 1-1s-.5-1-1-1-.99884033.5-.99884033 1 .49884033 1 .99884033 1zm0 4c.5 0 1-.5 1-1s-.5-1-1-1-.99884033.5-.99884033 1 .49884033 1 .99884033 1zm0 4c.5 0 1-.5 1-1s-.5-1-1-1-.99884033.5-.99884033 1 .49884033 1 .99884033 1z" fill="#2a2e3b"/></g></svg>
+`
+
+
+const NavExpandTrigger = styled.button`
+  margin: 0;
+  margin-right: .5rem;
+  padding: 0 .5rem;
+  line-height: 1;
+  display: block;
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  ${(props: { isActive: boolean }) => props.isActive
+    ? css`
+      `
+    : ''}
+`
+
+
 const DocsPageHeader = styled.header`
-  padding: 1rem 0;
+  padding: .5rem 0 .5rem 1rem;
   height: ${HEADER_HEIGHT_REM}rem;
 
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
+  ${BACKDROP_BLUR}
+
   position: fixed;
   top: 0;
   left: 0;
@@ -129,18 +176,43 @@ const DocsPageHeader = styled.header`
 
   z-index: 10;
 
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+
+  transition: right .2s linear;
+
   @media screen and (min-width: 800px) {
-    -webkit-backdrop-filter: unset;
-    backdrop-filter: unset;
-    right: unset;
+    padding: 1rem 0 1rem 1rem;
 
-    background: ${SIDEBAR_BACKGROUND};
-    border-right: ${SIDEBAR_BORDER};
+    ${(props: { sidebarIsOpen?: boolean }) => props.sidebarIsOpen === undefined
+      ? css`
+          right: unset;
 
-    width: ${SIDEBAR_WIDTH_REM}rem;
-    overflow: hidden;
-    padding-left: 1rem;
+          background: ${SIDEBAR_BACKGROUND};
+          border-right: ${SIDEBAR_BORDER};
+
+          width: ${SIDEBAR_WIDTH_REM}rem;
+          overflow: hidden;
+        `
+      : ''}
   }
+
+  ${(props: { sidebarIsOpen?: boolean }) => props.sidebarIsOpen === true
+    ? css`
+        // TODO: BEGIN DUPLICATION
+
+        right: unset;
+
+        background: ${SIDEBAR_BACKGROUND};
+        border-right: ${SIDEBAR_BORDER};
+
+        width: ${SIDEBAR_WIDTH_REM}rem;
+        overflow: hidden;
+
+        // END DUPLICATION
+      `
+    : ''}
 `
 
 const DocsPageMain = styled.div`
@@ -148,13 +220,20 @@ const DocsPageMain = styled.div`
 
   @media screen and (min-width: 800px) {
     margin-right: 0;
-    margin-left: ${SIDEBAR_WIDTH_REM}rem;
+
     padding-left: 2rem;
     padding-top: 1.75rem;
     padding-right: 2rem;
 
     flex: 1;
     overflow-y: auto;
+
+    ${(props: { sidebarIsOpen?: boolean }) => props.sidebarIsOpen
+      ? css`
+          margin-left: ${SIDEBAR_WIDTH_REM}rem;
+        `
+      : css`
+        `}
   }
 `
 
@@ -170,5 +249,6 @@ const DocsPageFooter = styled.footer`
     bottom: 0;
     left: 0;
     justify-content: flex-start;
+    z-index: 11;
   }
 `
