@@ -100,7 +100,7 @@ function ({
                   <PageToCItemList>
                     {page.data.sections.map(s =>
                       <li>
-                        <a href={`#${s.id}`}>{s.title}</a>
+                        <a href={`#${s.id}`} dangerouslySetInnerHTML={{ __html: s.title }} />
                       </li>
                     )}
                   </PageToCItemList>
