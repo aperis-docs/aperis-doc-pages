@@ -27,7 +27,7 @@ const PageBlock: React.FC<PageBlockProps> = function ({ item }) {
     <DocPageContext.Consumer>
       {({ AsciidocComponent, LinkComponent }) =>
         <DocsPageBlock>
-          {coverMedia
+          {coverMedia && coverMedia.dimensions
             ? <CoverMedia
                 src={`./${item.path}/${coverMedia.filename}`}
                 dimensions={coverMedia.dimensions} />
