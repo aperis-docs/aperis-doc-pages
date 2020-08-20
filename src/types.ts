@@ -2,7 +2,6 @@ export interface DocPage {
   id: string
 
   data?: {
-    type?: 'widget' | 'module' | 'panel'
     title: string
 
     excerpt?: string // Super short
