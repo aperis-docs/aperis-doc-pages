@@ -1,3 +1,57 @@
 = Aperis: documentation pages
 
 For usage example, refer to Glossarist site: https://github.com/glossarist/glossarist.org/.
+
+== Development
+
+=== Making changes
+
+Use Commitizen guidelines when writing commit messages.
+
+=== Testing
+
+TODO: Bundle a test project in this repository.
+
+. {blank}
++
+[source]
+--
+$ yarn
+--
+
+. Replace package reference in your test project’s package.json
++
+[source]
+--
+  ...
+  "dependencies": [
+    ...
+    "@riboseinc/aperis-doc-pages": "<path to your local working copy root of this repo>/dist",
+    ...
+  ]
+  ...
+--
+
+. Fetch updated dependency
++
+[source]
+--
+yarn
+--
+
+. Rebuild test project and confirm functionality
+
+=== Publishing
+
+. Update version in package.json.
+
+. {blank}
++
+[source]
+--
+$ yarn
+$ cd dist
+$ git tag -s <new version>
+$ git push --follow-tags
+$ npm publish
+--
