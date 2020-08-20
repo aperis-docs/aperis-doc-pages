@@ -1,5 +1,8 @@
+import React from 'react'
 import styled, { css } from 'styled-components'
+import { Breadcrumb } from '../types'
 import { Lead as BasicLead } from './typography'
+import DocPageContext from './context'
 
 
 export const SIDEBAR_WIDTH_REM = 16
@@ -126,6 +129,55 @@ export const GlobalNav = styled.nav`
 `
 
 
+const Crumbs = styled.ul`
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  // Make height & padding equivalent to header to align nicely
+  height: ${HEADER_HEIGHT_REM}rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  list-style: none;
+  font-size: 80%;
+`
+
+const Crumb = styled.li`
+  color: grey;
+
+  &:after {
+    content: "/";
+    margin: 0 .5rem;
+    color: silver;
+  }
+`
+
+export const Breadcrumbs: React.FC<{ crumbs: Breadcrumb[] }> =
+function ({ crumbs }) {
+  return (
+    <DocPageContext.Consumer>
+      {({ LinkComponent }) =>
+        <Crumbs>
+          {crumbs.map((crumb, idx) =>
+            <Crumb>
+              <LinkComponent
+                  unstyled
+                  to={Array(crumbs.length - idx).fill('..').join('/')}>
+                {crumb.title}
+              </LinkComponent>
+            </Crumb>
+          )}
+        </Crumbs>
+      }
+    </DocPageContext.Consumer>
+  )
+}
+
+
 export const Main = styled.main`
   margin-top: ${HEADER_HEIGHT_REM + 1}rem;
   margin-bottom: 2em;
@@ -137,7 +189,13 @@ export const Main = styled.main`
     }
   }
 
+  > h2 {
+    margin-top: 0;
+  }
+
   @media screen and (min-width: 800px) {
+    max-width: 50rem;
+
     transition: margin-top .2s linear;
 
     ${(props: { sidebarIsOpen: boolean }) => props.sidebarIsOpen
@@ -149,13 +207,6 @@ export const Main = styled.main`
           margin-right: auto;
           margin-bottom: 4em;
         `}
-
-    padding-top: 1rem;
-    max-width: 50rem;
-
-    h2 {
-      margin-top: 0;
-    }
   }
 `
 

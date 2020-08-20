@@ -2,6 +2,8 @@ export interface DocPage {
   id: string
 
   data?: {
+    breadcrumbs?: Breadcrumb[]
+
     title: string
 
     excerpt?: string // Super short
@@ -17,6 +19,11 @@ export interface DocPage {
   }
 
   items?: DocsPageItem[]
+}
+
+
+export interface Breadcrumb {
+  title: string
 }
 
 

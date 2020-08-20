@@ -9,7 +9,7 @@ import { PageTitle } from './typography'
 
 import {
   Main, Lead, PageToC, PageToCItemList, PageBlocks,
-  GlobalNav, GlobalNavTopLevelItemList,
+  GlobalNav, GlobalNavTopLevelItemList, Breadcrumbs,
   SIDEBAR_BACKGROUND, SIDEBAR_BORDER,
   SIDEBAR_WIDTH_REM, HEADER_HEIGHT_REM, BACKDROP_BLUR,
 } from './pageElements'
@@ -83,6 +83,11 @@ function ({
           <Main
               sidebarIsOpen={sidebarIsOpen}
               onClick={closeSidebarIfViewportIsNarrow}>
+
+            {page.data?.breadcrumbs
+              ? <Breadcrumbs crumbs={page.data.breadcrumbs} />
+              : null}
+
             <PageTitle>{page.data?.title}</PageTitle>
 
             <Lead>
@@ -224,7 +229,6 @@ const DocsPageMain = styled.div`
     margin-right: 0;
 
     padding-left: 2rem;
-    padding-top: 1.75rem;
     padding-right: 2rem;
 
     flex: 1;
