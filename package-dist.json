@@ -4,7 +4,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "repository": "git@github.com:riboseinc/aperis-doc-pages.git",
-  "author": "Ribose Open <open@ribose.com>",
+  "author": "Ribose Inc. <open.source@ribose.com>",
   "peerDependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

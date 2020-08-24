@@ -3,7 +3,7 @@
   "version": "0.0.0-use-package-dist",
   "main": "index.js",
   "repository": "git@github.com:riboseinc/aperis-doc-pages.git",
-  "author": "Ribose Open <open@ribose.com>",
+  "author": "Ribose Inc. <open.source@ribose.com>",
   "scripts": {
     "build": "babel dist --out-dir dist",
     "prepublish": "rm -rf dist; tsc; yarn build; cp package-dist.json dist/package.json; rsync -avm --include='*.js' --include='*.scss' --include='*.css' --include='*.d.ts' -f 'hide,! */' ./src/ ./dist"
