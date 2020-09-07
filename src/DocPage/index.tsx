@@ -223,7 +223,7 @@ const DocsPageHeader = styled.header`
 `
 
 const DocsPageMain = styled.div`
-  margin: 0 1em;
+  margin: 0 1rem;
 
   @media screen and (min-width: 800px) {
     margin-right: 0;
