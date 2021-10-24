@@ -1,3 +1,4 @@
+/** Render-ready page data. */
 export interface DocPage {
   id: string
 
@@ -10,9 +11,12 @@ export interface DocPage {
     // TODO: Rename “excerpt” to “in-app tooltip”?
 
     summary?: string // Longer than excerpt, AsciiDoc rendered as HTML
-    contents?: string // Asciidoc rendered as HTML
+    contents?: string // Source (ProseMirror structure or Asciidoc) rendered as HTML
 
-    // Sections extracted from Asciidoc; `name` should correspond to HTML anchor ID
+    /**
+     * Sections extracted from the source (ProseMirror structure or Asciidoc);
+     * `name` must correspond to HTML anchor ID
+     */
     sections?: { title: string, id: string }[]
 
     media?: MediaItem[]
